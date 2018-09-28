@@ -5,6 +5,21 @@
       "ingest-percentage": {{ingest_percentage | default(100)}}
     },
     {
+      "name": "mad_agg",
+      "operation-type": "search",
+      "cache": false,
+      "body": {
+        "size": 0,
+	"aggs": {
+	  "mad": {
+	    "mad": {
+	      "field": "station.elevation"
+	    }
+	  }
+	}
+      }
+    },
+    {
       "name": "range_field_big_range",
       "operation-type": "search",
       "body": {
