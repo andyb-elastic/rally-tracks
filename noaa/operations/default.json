@@ -28,7 +28,7 @@
 	"aggs": {
 	  "percentiles": {
 	    "percentiles": {
-	      "field": "station.elevation",
+	      "field": "station.elevation"
 	    }
 	  }
 	}
