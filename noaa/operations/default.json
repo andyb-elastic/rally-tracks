@@ -20,6 +20,21 @@
       }
     },
     {
+      "name": "percentiles_agg",
+      "operation-type": "search",
+      "cache": false,
+      "body": {
+        "size": 0,
+	"aggs": {
+	  "percentiles": {
+	    "percentiles": {
+	      "field": "station.elevation",
+	    }
+	  }
+	}
+      }
+    },
+    {
       "name": "range_field_big_range",
       "operation-type": "search",
       "body": {
