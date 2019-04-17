@@ -1,0 +1,461 @@
+{% import "rally.helpers" as rally with context %}
+
+{
+  "version": 2,
+  "description": "Full text benchmark with academic papers from PMC",
+  "indices": [
+    {
+      "name": "pmc-sayt",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "pmc-sayt",
+      "documents": [
+        {
+          "source-file": "documents.json",
+          "document-count": 574199,
+          "uncompressed-bytes": 23156541181
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {
+      "name": "index-append",
+      "operation-type": "bulk",
+      "bulk-size": {{bulk_size | default(500)}},
+      "ingest-percentage": {{ingest_percentage | default(100)}}
+    },
+    {
+      "name": "index-update",
+      "operation-type": "bulk",
+      "bulk-size": {{bulk_size | default(500)}},
+      "ingest-percentage": {{ingest_percentage | default(100)}},
+      "conflicts": "random",
+      "on-conflict": "{{on_conflict | default('index')}}",
+      "conflict-probability": {{conflict_probability | default(25)}},
+      "recency": {{recency | default(0)}}
+    },
+    {
+      "name": "match_all",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_all": {}
+        }
+      }
+    },
+    {
+      "name": "prefix_journal_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "journal": "vo"
+          }
+        }
+      }
+    },
+    {
+      "name": "prefix_journal_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "journal": "c"
+          }
+        }
+      }
+    },
+    {
+      "name": "prefix_body_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "body": "synucleinopathie"
+          }
+        }
+      }
+    },
+    {
+      "name": "prefix_body_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "body": "s"
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_single_journal_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "journal": "big dat"
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_single_journal_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "journal": "j beha"
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_single_body_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "body": "deamidation by specifi"
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_single_body_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "body": "school of medicin"
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_multi_journal_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "big dat",
+            "type": "bool_prefix",
+            "fields": [
+              "journal",
+              "journal._2gram",
+              "journal._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_multi_journal_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "j beha",
+            "type": "bool_prefix",
+            "fields": [
+              "journal",
+              "journal._2gram",
+              "journal._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_multi_body_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "deamidation by specifi",
+            "type": "bool_prefix",
+            "fields": [
+              "body",
+              "body._2gram",
+              "body._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "match_bool_prefix_multi_body_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "school of medicin",
+            "type": "bool_prefix",
+            "fields": [
+              "body",
+              "body._2gram",
+              "body._3gram"
+            ]
+          }
+        }
+      }
+    }
+  ],
+  "challenges": [
+    {
+      "name": "benchmark-text",
+      "description": "Benchmarks for text field",
+      "default": true,
+      "cluster-settings": {
+        "search.default_search_timeout": "{{default_search_timeout | default(-1)}}"
+      },
+      "schedule": [
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {{index_settings | default({}) | tojson}}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "pmc",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            }
+          }
+        },
+        {
+          "operation": "index-append",
+          "warmup-time-period": 240,
+          "clients": {{bulk_indexing_clients | default(8)}}
+        },
+        {
+          "name": "refresh-after-index",
+          "operation": "refresh",
+          "clients": 1
+        },
+        {
+          "operation": "force-merge",
+          "clients": 1
+        },
+        {
+          "name": "refresh-after-force-merge",
+          "operation": "refresh",
+          "clients": 1
+        },
+        {
+          "operation": "match_all",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_journal_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_journal_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_body_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_body_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_journal_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_journal_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_body_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_body_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        }
+      ]
+    },
+    {
+      "name": "benchmark-sayt",
+      "description": "Benchmarks for search as you type field",
+      "default": false,
+      "cluster-settings": {
+        "search.default_search_timeout": "{{default_search_timeout | default(-1)}}"
+      },
+      "schedule": [
+        {
+          "operation": "delete-index"
+        },
+        {
+          "operation": {
+            "operation-type": "create-index",
+            "settings": {{index_settings | default({}) | tojson}}
+          }
+        },
+        {
+          "name": "check-cluster-health",
+          "operation": {
+            "operation-type": "cluster-health",
+            "index": "pmc",
+            "request-params": {
+              "wait_for_status": "{{cluster_health | default('green')}}",
+              "wait_for_no_relocating_shards": "true"
+            }
+          }
+        },
+        {
+          "operation": "index-append",
+          "warmup-time-period": 240,
+          "clients": {{bulk_indexing_clients | default(8)}}
+        },
+        {
+          "name": "refresh-after-index",
+          "operation": "refresh",
+          "clients": 1
+        },
+        {
+          "operation": "force-merge",
+          "clients": 1
+        },
+        {
+          "name": "refresh-after-force-merge",
+          "operation": "refresh",
+          "clients": 1
+        },
+        {
+          "operation": "match_all",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_journal_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_journal_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_body_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "prefix_body_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_journal_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_journal_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_body_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_single_body_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_multi_journal_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_multi_journal_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_multi_body_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "match_bool_prefix_multi_body_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        }
+      ]
+    }
+  ]
+}
