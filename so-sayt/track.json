@@ -1,0 +1,79 @@
+{% import "rally.helpers" as rally with context %}
+
+{
+  "version": 2,
+  "description": "Indexing benchmark using up to questions and answers from StackOverflow",
+  "indices": [
+    {
+      "name": "so",
+      "body": "index.json"
+    }
+  ],
+  "corpora": [
+    {
+      "name": "so-title",
+      "target-index": "so",
+      "documents": [
+        {
+          "source-file": "data-title.json",
+          "document-count": 14015376,
+          "uncompressed-bytes": 911218031
+        }
+      ]
+    },
+    {
+      "name": "so-body",
+      "target-index": "so",
+      "documents": [
+        {
+          "source-file": "data-body.json",
+          "document-count": 36062274,
+          "uncompressed-bytes": 29839214429
+        }
+      ]
+    }
+  ],
+  "operations": [
+    {{ rally.collect(parts="operations/*.json") }}
+  ],
+  "challenges": [
+    {
+      "name": "benchmark-title-text",
+      "description": "index and benchmark the title field, the type of which may vary",
+      "default": true,
+      "schedule": [
+        {% include "challenge-components/title-indexing.json" %},
+        {% include "challenge-components/title-prefix.json" %},
+        {% include "challenge-components/title-bool-prefix-single.json" %}
+      ]
+    },
+    {
+      "name": "benchmark-title-sayt",
+      "description": "index and benchmark the title field, the type of which may vary",
+      "default": false,
+      "schedule": [
+        {% include "challenge-components/title-indexing.json" %},
+        {% include "challenge-components/title-prefix.json" %},
+        {% include "challenge-components/title-bool-prefix-single.json" %},
+        {% include "challenge-components/title-bool-prefix-multi.json" %}
+      ]
+    },
+    {
+      "name": "benchmark-title-completion",
+      "description": "index and benchmark the title field, the type of which may vary",
+      "default": false,
+      "schedule": [
+        {% include "challenge-components/title-indexing.json" %},
+        {% include "challenge-components/title-completion.json" %}
+      ]
+    },
+    {
+      "name": "benchmark-body-text",
+      "description": "index and benchmark the body field, the type of which may vary",
+      "default": false,
+      "schedule": [
+        {% include "challenge-components/body-indexing.json" %}
+      ]
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+    {
+      "name": "title_bool_prefix_multi_2_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "button clic",
+            "type": "bool_prefix",
+            "fields": [
+              "title",
+              "title._2gram",
+              "title._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "title_bool_prefix_multi_2_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "beacon detectio",
+            "type": "bool_prefix",
+            "fields": [
+              "title",
+              "title._2gram",
+              "title._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "title_bool_prefix_multi_3_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "in bash script",
+            "type": "bool_prefix",
+            "fields": [
+              "title",
+              "title._2gram",
+              "title._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "title_bool_prefix_multi_3_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "guice handler servle",
+            "type": "bool_prefix",
+            "fields": [
+              "title",
+              "title._2gram",
+              "title._3gram"
+            ]
+          }
+        }
+      }
+    }

@@ -1,0 +1,28 @@
+        {
+          "operation": "title_prefix_prefix_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "title_prefix_prefix_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "title_prefix_infix_common",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        },
+        {
+          "operation": "title_prefix_infix_rare",
+          "clients": 1,
+          "warmup-iterations": 500,
+          "iterations": 200,
+          "target-throughput": 20
+        }

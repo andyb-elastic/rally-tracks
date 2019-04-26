@@ -1,0 +1,44 @@
+    {
+      "name": "title_bool_prefix_single_2_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "title": "button clic"
+          }
+        }
+      }
+    },
+    {
+      "name": "title_bool_prefix_single_2_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "title": "beacon detectio"
+          }
+        }
+      }
+    },
+    {
+      "name": "title_bool_prefix_single_3_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "title": "in bash script"
+          }
+        }
+      }
+    },
+    {
+      "name": "title_bool_prefix_single_3_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "title": "guice handler servle"
+          }
+        }
+      }
+    }

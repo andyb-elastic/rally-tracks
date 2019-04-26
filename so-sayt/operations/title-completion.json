@@ -1,0 +1,28 @@
+    {
+      "name": "title_completion_common",
+      "operation-type": "search",
+      "body": {
+        "suggest": {
+          "my_suggest": {
+            "prefix": "cr",
+            "completion": {
+              "field": "title"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "title_completion_rare",
+      "operation-type": "search",
+      "body": {
+        "suggest": {
+          "my_suggest": {
+            "prefix": "tiddlywik",
+            "completion": {
+              "field": "title"
+            }
+          }
+        }
+      }
+    }

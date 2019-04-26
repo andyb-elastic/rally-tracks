@@ -1,0 +1,44 @@
+    {
+      "name": "title_prefix_prefix_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "title": "cr"
+          }
+        }
+      }
+    },
+    {
+      "name": "title_prefix_prefix_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "title": "tiddlywik"
+          }
+        }
+      }
+    },
+    {
+      "name": "title_prefix_infix_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "title": "dat"
+          }
+        }
+      }
+    },
+    {
+      "name": "title_prefix_infix_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "title": "hypergeometr"
+          }
+        }
+      }
+    }
