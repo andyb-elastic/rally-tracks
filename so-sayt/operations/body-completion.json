@@ -1,0 +1,28 @@
+    {
+      "name": "body_completion_common",
+      "operation-type": "search",
+      "body": {
+        "suggest": {
+          "my_suggest": {
+            "prefix": "i",
+            "completion": {
+              "field": "body"
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "body_completion_rare",
+      "operation-type": "search",
+      "body": {
+        "suggest": {
+          "my_suggest": {
+            "prefix": "registerservicectrlhandle",
+            "completion": {
+              "field": "body"
+            }
+          }
+        }
+      }
+    }

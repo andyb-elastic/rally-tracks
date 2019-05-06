@@ -1,0 +1,44 @@
+    {
+      "name": "body_bool_prefix_single_2_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "body": "i want"
+          }
+        }
+      }
+    },
+    {
+      "name": "body_bool_prefix_single_2_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "body": "delphi method"
+          }
+        }
+      }
+    },
+    {
+      "name": "body_bool_prefix_single_3_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "body": "public static void"
+          }
+        }
+      }
+    },
+    {
+      "name": "body_bool_prefix_single_3_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "match_bool_prefix": {
+            "body": "rapidssl and geotrust"
+          }
+        }
+      }
+    }

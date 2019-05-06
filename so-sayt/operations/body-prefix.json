@@ -1,0 +1,44 @@
+    {
+      "name": "body_prefix_prefix_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "body": "i"
+          }
+        }
+      }
+    },
+    {
+      "name": "body_prefix_prefix_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "body": "registerservicectrlhandle"
+          }
+        }
+      }
+    },
+    {
+      "name": "body_prefix_infix_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "body": "clas"
+          }
+        }
+      }
+    },
+    {
+      "name": "body_prefix_infix_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "prefix": {
+            "body": "layoutstyle"
+          }
+        }
+      }
+    }

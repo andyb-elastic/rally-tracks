@@ -26,9 +26,9 @@
       "target-index": "so",
       "documents": [
         {
-          "source-file": "data-body.json",
-          "document-count": 36062274,
-          "uncompressed-bytes": 29839214429
+          "source-file": "data-body-truncated.json",
+          "document-count": 36062259,
+          "uncompressed-bytes": 4047135813
         }
       ]
     }
@@ -72,7 +72,29 @@
       "description": "index and benchmark the body field, the type of which may vary",
       "default": false,
       "schedule": [
-        {% include "challenge-components/body-indexing.json" %}
+        {% include "challenge-components/body-indexing.json" %},
+        {% include "challenge-components/body-prefix.json" %},
+        {% include "challenge-components/body-bool-prefix-single.json" %}
+      ]
+    },
+    {
+      "name": "benchmark-body-sayt",
+      "description": "index and benchmark the body field, the type of which may vary",
+      "default": false,
+      "schedule": [
+        {% include "challenge-components/body-indexing.json" %},
+        {% include "challenge-components/body-prefix.json" %},
+        {% include "challenge-components/body-bool-prefix-single.json" %},
+        {% include "challenge-components/body-bool-prefix-multi.json" %}
+      ]
+    },
+    {
+      "name": "benchmark-body-completion",
+      "description": "index and benchmark the body field, the type of which may vary",
+      "default": false,
+      "schedule": [
+        {% include "challenge-components/body-indexing.json" %},
+        {% include "challenge-components/body-completion.json" %}
       ]
     }
   ]

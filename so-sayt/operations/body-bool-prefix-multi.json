@@ -1,0 +1,68 @@
+    {
+      "name": "body_bool_prefix_multi_2_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "i want",
+            "type": "bool_prefix",
+            "fields": [
+              "body",
+              "body._2gram",
+              "body._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "body_bool_prefix_multi_2_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "delphi method",
+            "type": "bool_prefix",
+            "fields": [
+              "body",
+              "body._2gram",
+              "body._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "body_bool_prefix_multi_3_term_common",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "public static void",
+            "type": "bool_prefix",
+            "fields": [
+              "body",
+              "body._2gram",
+              "body._3gram"
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "body_bool_prefix_multi_3_term_rare",
+      "operation-type": "search",
+      "body": {
+        "query": {
+          "multi_match": {
+            "query": "rapidssl and geotrust",
+            "type": "bool_prefix",
+            "fields": [
+              "body",
+              "body._2gram",
+              "body._3gram"
+            ]
+          }
+        }
+      }
+    }
